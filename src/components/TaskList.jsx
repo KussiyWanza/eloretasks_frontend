@@ -34,7 +34,7 @@ function TaskList() {
 
   if (loading) return <p className="text-gray-500">Loading tasks...</p>
   if (error) return <p className="text-red-500">{error}</p>
-  if (tasks.length === 0) return <p className="text-gray-500">No tasks yet. Create one!</p>
+  if (tasks.length === 0) return <p className="text-gray-500 select-none">No tasks yet. Create one!</p>
 
   return (
     <div>
