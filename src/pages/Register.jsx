@@ -32,8 +32,8 @@ function Register() {
     >
 
 
-      <form onSubmit={handleSubmit} className="relative bg-white p-8 rounded shadow-md w-80">
-        <h1 className="text-xl font-bold mb-4">Register</h1>
+      <form onSubmit={handleSubmit} className="relative bg-white/20 backdrop-blur-md border border-white/30 p-8 rounded-2xl shadow-2xl w-80">
+        <h1 className="text-xl text-white font-bold mb-4 flex justify-center">Register</h1>
 
         {error && <p className="text-red-500 mb-3">{error}</p>}
 
@@ -42,7 +42,7 @@ function Register() {
           placeholder="Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="border w-full p-2 mb-3 rounded"
+          className="border-b-2 w-full border-white text-white p-2 mb-4 outline-none"
           required
         />
         <input
@@ -50,7 +50,7 @@ function Register() {
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="border w-full p-2 mb-3 rounded"
+          className="border-b-2 w-full border-white text-white p-2 mb-4 outline-none"
           required
         />
         <input
@@ -58,14 +58,14 @@ function Register() {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="border w-full p-2 mb-3 rounded"
+          className="border-b-2 w-full border-white text-white p-2 mb-4 outline-none"
           required
         />
-        <button type="submit" className="bg-orange-500 hover:bg-orange-600 text-white w-full py-2 rounded transition-colors">
+        <button type="submit" className="border-2 border-white text-white w-full py-2 rounded cursor-pointer">
           Register
         </button>
 
-        <p className="text-sm mt-3 text-center">
+        <p className="text-sm text-white mt-3 text-center">
           Already have an account? <Link to="/login" className="text-orange-600">Log In</Link>
         </p>
       </form>

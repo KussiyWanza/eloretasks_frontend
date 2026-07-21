@@ -2,11 +2,13 @@ import { useState, useContext } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext.jsx'
 import forestBg from '../assets/forest-bg.jpg'
+import { Eye, EyeOff } from 'lucide-react'
 
 function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const { login } = useContext(AuthContext)
   const navigate = useNavigate()
 
@@ -41,14 +43,23 @@ function Login() {
           required
         />
         <input
-          type="password"
+          type={showPassword ? 'text' : 'password'}
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           className="border-b-2 w-full border-white text-white p-2 mb-4 outline-none"
           required
         />
-        <button type="submit" className="bg-orange-500 hover:bg-orange-600 text-white w-full py-2 rounded transition-colors">
+
+  <button
+  type="button"
+  onClick={() => setShowPassword((prev) => !prev)}
+  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/70 hover:text-white m-2 cursor-pointer"
+>
+  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+</button>
+
+        <button type="submit" className="border-2 border-white text-white w-full py-2 rounded cursor-pointer">
           Log In
         </button>
 
