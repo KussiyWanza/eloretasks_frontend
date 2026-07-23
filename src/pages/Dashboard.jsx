@@ -27,7 +27,7 @@ function Dashboard() {
       className="min-h-screen bg-cover bg-center bg-fixed relative"
       style={{ backgroundImage: `url(${forestBg})` }}
     >
-      <div className="absolute inset-0 bg-black/40" />
+      <div className="absolute inset-0" />
 
       <div className="relative">
         <header className="bg-white/10 backdrop-blur-md border-b border-white/30 shadow-lg rounded-full">
