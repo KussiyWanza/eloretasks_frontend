@@ -73,7 +73,7 @@ function Register() {
   </button>
 </div>
         
-        <button type="submit" className="border-2 border-white text-white w-full py-2 rounded cursor-pointer">
+        <button type="submit" className="border-2 border-white text-white w-full py-2 rounded cursor-pointer transition-colors hover:bg-white/10">
           Register
         </button>
 
