@@ -42,22 +42,26 @@ function Login() {
           className="border-b-2 w-full border-white text-white p-2 mb-4 outline-none"
           required
         />
-        <input
-          type={showPassword ? 'text' : 'password'}
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="border-b-2 w-full border-white text-white p-2 mb-4 outline-none"
-          required
-        />
-
+        <div className="relative mb-3">
+  <input
+    type={showPassword ? 'text' : 'password'}
+    placeholder="Password"
+    value={password}
+    onChange={(e) => setPassword(e.target.value)}
+    className="border-b-2 border-white placeholder-white/70 outline-none text-white w-full p-2 pr-10"
+    required
+  />
+  
   <button
   type="button"
   onClick={() => setShowPassword((prev) => !prev)}
-  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/70 hover:text-white m-2 cursor-pointer"
+  className="absolute right-1 top-1/2 -translate-y-1/2 text-white/70 hover:text-white cursor-pointer"
 >
   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
 </button>
+</div>
+
+  
 
         <button type="submit" className="border-2 border-white text-white w-full py-2 rounded cursor-pointer">
           Log In

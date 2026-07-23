@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import api from '../services/api'
 import { AuthContext } from '../context/AuthContext.jsx'
 import forestBg from '../assets/forest-bg.jpg'
+import { Eye, EyeOff } from 'lucide-react'
 
 function Register() {
   const [name, setName] = useState('')
@@ -11,6 +12,7 @@ function Register() {
   const [error, setError] = useState('')
   const { setAuthData } = useContext(AuthContext)
   const navigate = useNavigate()
+  const [showPassword, setShowPassword] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -53,14 +55,24 @@ function Register() {
           className="border-b-2 w-full border-white text-white p-2 mb-4 outline-none"
           required
         />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="border-b-2 w-full border-white text-white p-2 mb-4 outline-none"
-          required
-        />
+        <div className="relative mb-3">
+  <input
+    type={showPassword ? 'text' : 'password'}
+    placeholder="Password"
+    value={password}
+    onChange={(e) => setPassword(e.target.value)}
+    className="border-b-2 border-white placeholder-white/70 text-white w-full p-2 pr-10 outline-none"
+    required
+  />
+  <button
+    type="button"
+    onClick={() => setShowPassword((prev) => !prev)}
+    className="absolute right-1 top-1/2 -translate-y-1/2 text-white/70 hover:text-white"
+  >
+    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+  </button>
+</div>
+        
         <button type="submit" className="border-2 border-white text-white w-full py-2 rounded cursor-pointer">
           Register
         </button>
