@@ -30,7 +30,7 @@ function Dashboard() {
       <div className="absolute inset-0 bg-black/40" />
 
       <div className="relative">
-        <header className="bg-white/20 backdrop-blur-md border-b border-white/30 shadow-lg">
+        <header className="bg-white/10 backdrop-blur-md border-b border-white/30 shadow-lg rounded-full">
           <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
             <h1 className="text-2xl font-bold text-white">Welcome, {user.name}</h1>
             <button
