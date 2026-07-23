@@ -97,7 +97,7 @@ function TaskList() {
         </button>
       </div>
 
-      {loading && <p className="text-white/60 text-center py-6">Loading...</p>}
+      {loading && <p className="text-white/60 text-center py-6">Loading :D</p>}
       {error && <p className="text-red-400 text-center py-6">{error}</p>}
       {!loading && filteredTasks.length === 0 && (
         <p className="text-white/50 text-center py-6">No todos yet. Add a task</p>
