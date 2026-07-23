@@ -37,7 +37,7 @@ function CreateTaskForm({ onTaskCreated }) {
         <button
           type="submit"
           disabled={submitting}
-          className="w-8 h-8 flex-shrink-0 rounded-full border border-white/40 text-white flex items-center justify-center hover:bg-white/10 transition-colors disabled:opacity-50 cursor-pointer"
+          className="w-8 h-8 flex-shrink-0 rounded-full border border-white/40 text-white flex items-center justify-center hover:bg-white/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
         >
           <Plus size={18} />
         </button>

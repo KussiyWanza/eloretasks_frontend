@@ -51,7 +51,7 @@ function TaskCard({ task, onDelete, onUpdate }) {
         <div className="flex items-center gap-3 flex-1 min-w-0">
           <button
             onClick={toggleComplete}
-            className={`w-5 h-5 flex-shrink-0 rounded-full border flex items-center justify-center transition-colors ${
+            className={`w-5 h-5 flex-shrink-0 rounded-full border flex items-center justify-center transition-colors cursor-pointer ${
               isCompleted ? 'bg-green-500 border-green-500' : 'border-white/40 hover:border-white/70'
             }`}
           >
@@ -85,7 +85,7 @@ function TaskCard({ task, onDelete, onUpdate }) {
               e.stopPropagation()
               setExpanded((prev) => !prev)
             }}
-            className="text-white/50 hover:text-white transition-colors"
+            className="text-white/50 hover:text-white transition-colors cursor-pointer"
           >
             {expanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
           </button>
@@ -94,7 +94,7 @@ function TaskCard({ task, onDelete, onUpdate }) {
               e.stopPropagation()
               setIsEditing(true)
             }}
-            className="text-white/50 hover:text-white transition-colors"
+            className="text-white/50 hover:text-white transition-colors cursor-pointer"
           >
             <Pencil size={15} />
           </button>
@@ -103,7 +103,7 @@ function TaskCard({ task, onDelete, onUpdate }) {
               e.stopPropagation()
               onDelete(task._id)
             }}
-            className="text-white/50 hover:text-red-400 transition-colors"
+            className="text-white/50 hover:text-red-400 transition-colors cursor-pointer"
           >
             <Trash2 size={15} />
           </button>
@@ -127,7 +127,7 @@ function TaskCard({ task, onDelete, onUpdate }) {
               value={deadline}
               onChange={(e) => setDeadline(e.target.value)}
               onBlur={saveDetails}
-              className="bg-white/5 border border-white/20 text-white text-sm px-2 py-1 rounded-lg outline-none"
+              className="bg-white/5 border border-white/20 text-white text-sm px-2 py-1 rounded-lg outline-none cursor-pointer"
             />
           </div>
         </div>

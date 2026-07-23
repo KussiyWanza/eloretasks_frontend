@@ -108,7 +108,7 @@ function TaskList() {
           <button
             type="button"
             onClick={() => setSortOpen((prev) => !prev)}
-            className="flex items-center gap-1.5 bg-white/5 border border-white/20 text-white text-sm px-3 py-1.5 rounded-lg outline-none hover:bg-white/10 transition-colors capitalize"
+            className="flex items-center gap-1.5 bg-white/5 border border-white/20 text-white text-sm px-3 py-1.5 rounded-lg outline-none hover:bg-white/10 transition-colors capitalize cursor-pointer"
           >
             {sortBy}
             <ChevronDown size={14} className={`transition-transform ${sortOpen ? 'rotate-180' : ''}`} />
@@ -124,7 +124,7 @@ function TaskList() {
                     setSortBy(option)
                     setSortOpen(false)
                   }}
-                  className={`w-full text-left px-3 py-2 text-sm capitalize transition-colors ${
+                  className={`w-full text-left px-3 py-2 text-sm capitalize transition-colors cursor-pointer ${
                     sortBy === option ? 'bg-white/25 text-white' : 'text-white/70 hover:bg-white/15'
                   }`}
                 >
@@ -141,7 +141,7 @@ function TaskList() {
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`px-4 py-1.5 rounded-full text-sm capitalize border transition-colors ${
+            className={`px-4 py-1.5 rounded-full text-sm capitalize border transition-colors cursor-pointer ${
               filter === f
                 ? 'bg-white/20 border-white/40 text-white'
                 : 'border-white/30 text-white/70 hover:bg-white/10'
@@ -153,7 +153,7 @@ function TaskList() {
         <button
           onClick={() => setConfirmingClear(true)}
           disabled={tasks.length === 0}
-          className="ml-auto p-2 rounded-full border border-white/20 text-white/40 disabled:opacity-40 enabled:hover:bg-red-500/20 enabled:hover:text-red-400 transition-colors cursor-pointer"
+          className="ml-auto p-2 rounded-full border border-white/20 text-white/40 disabled:opacity-40 disabled:cursor-not-allowed enabled:hover:bg-red-500/20 enabled:hover:text-red-400 transition-colors cursor-pointer"
         >
           <Trash2 size={16} />
         </button>
