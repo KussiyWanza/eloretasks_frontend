@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Trash2 } from 'lucide-react'
+import { Trash2, Search, ChevronDown } from 'lucide-react'
 import { getTasks, deleteTask } from '../services/taskService'
 import TaskCard from './TaskCard.jsx'
 import CreateTaskForm from './CreateTaskForm.jsx'
@@ -10,11 +10,18 @@ function TaskList() {
   const [error, setError] = useState('')
   const [filter, setFilter] = useState('all')
   const [confirmingClear, setConfirmingClear] = useState(false)
+  const [search, setSearch] = useState('')
+  const [sortBy, setSortBy] = useState('newest')
+  const [sortOpen, setSortOpen] = useState(false)
 
   const fetchTasks = async () => {
     setLoading(true)
     try {
-      const res = await getTasks()
+      const params = {}
+      if (search.trim()) params.search = search.trim()
+      if (sortBy !== 'newest') params.sortBy = sortBy
+
+      const res = await getTasks(params)
       setTasks(res.data)
     } catch (err) {
       setError('Failed to load tasks')
@@ -24,8 +31,19 @@ function TaskList() {
   }
 
   useEffect(() => {
-    fetchTasks()
-  }, [])
+    const timeout = setTimeout(() => {
+      fetchTasks()
+    }, 350)
+    return () => clearTimeout(timeout)
+  }, [search, sortBy])
+
+  useEffect(() => {
+    const handleClickOutside = () => setSortOpen(false)
+    if (sortOpen) {
+      document.addEventListener('click', handleClickOutside)
+    }
+    return () => document.removeEventListener('click', handleClickOutside)
+  }, [sortOpen])
 
   const handleDelete = async (id) => {
     try {
@@ -67,12 +85,56 @@ function TaskList() {
   const remaining = tasks.filter((t) => t.status !== 'completed').length
 
   return (
-    <div className="relative bg-white/10 backdrop-blur-md border-x-2 border-white/30 rounded-2xl shadow-lg p-6 max-w-md mx-auto">
+    <div className="relative bg-white/10 backdrop-blur-md border-x-2 border-white/30 shadow-lg p-6 max-w-md mx-auto rounded-2xl">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-bold text-white">Todo List</h2>
       </div>
 
       <CreateTaskForm onTaskCreated={handleTaskCreated} />
+
+      <div className="flex items-center gap-2 mb-3">
+        <div className="relative flex-1">
+          <Search size={15} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-white/40" />
+          <input
+            type="text"
+            placeholder="Search tasks..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full bg-white/5 border border-white/20 placeholder-white/40 text-white text-sm pl-8 pr-3 py-1.5 rounded-lg outline-none"
+          />
+        </div>
+
+        <div className="relative" onClick={(e) => e.stopPropagation()}>
+          <button
+            type="button"
+            onClick={() => setSortOpen((prev) => !prev)}
+            className="flex items-center gap-1.5 bg-white/5 border border-white/20 text-white text-sm px-3 py-1.5 rounded-lg outline-none hover:bg-white/10 transition-colors capitalize"
+          >
+            {sortBy}
+            <ChevronDown size={14} className={`transition-transform ${sortOpen ? 'rotate-180' : ''}`} />
+          </button>
+
+          {sortOpen && (
+            <div className="absolute right-0 mt-1 w-32 bg-cyan-950/60 backdrop-blur-lg border border-white/30 rounded-lg shadow-2xl shadow-black/60 ring-1 ring-black/20 overflow-hidden z-10">
+              {['newest', 'oldest', 'deadline'].map((option) => (
+                <button
+                  key={option}
+                  type="button"
+                  onClick={() => {
+                    setSortBy(option)
+                    setSortOpen(false)
+                  }}
+                  className={`w-full text-left px-3 py-2 text-sm capitalize transition-colors ${
+                    sortBy === option ? 'bg-white/25 text-white' : 'text-white/70 hover:bg-white/15'
+                  }`}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
 
       <div className="flex items-center gap-2 mb-4">
         {['all', 'incomplete', 'completed'].map((f) => (
@@ -97,7 +159,7 @@ function TaskList() {
         </button>
       </div>
 
-      {loading && <p className="text-white/60 text-center py-6">Loading :D</p>}
+      {loading && <p className="text-white/60 text-center py-6">Loading...</p>}
       {error && <p className="text-red-400 text-center py-6">{error}</p>}
       {!loading && filteredTasks.length === 0 && (
         <p className="text-white/50 text-center py-6">No todos yet. Add a task</p>
