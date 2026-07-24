@@ -54,9 +54,17 @@ function TaskList() {
     }
   }
 
-  const handleTaskCreated = (newTask) => {
-    setTasks((prev) => [newTask, ...prev])
-  }
+  const handleTaskAdded = (tempTask) => {
+  setTasks((prev) => [tempTask, ...prev])
+}
+
+const handleTaskConfirmed = (tempId, realTask) => {
+  setTasks((prev) => prev.map((t) => (t._id === tempId ? realTask : t)))
+}
+
+const handleTaskFailed = (tempId) => {
+  setTasks((prev) => prev.filter((t) => t._id !== tempId))
+}
 
   const handleTaskUpdated = (updatedTask) => {
     setTasks((prev) => prev.map((t) => (t._id === updatedTask._id ? updatedTask : t)))
@@ -90,7 +98,11 @@ function TaskList() {
         <h2 className="text-xl font-bold text-white">Todo List</h2>
       </div>
 
-      <CreateTaskForm onTaskCreated={handleTaskCreated} />
+      <CreateTaskForm
+  onTaskAdded={handleTaskAdded}
+  onTaskConfirmed={handleTaskConfirmed}
+  onTaskFailed={handleTaskFailed}
+/>
 
       <div className="flex items-center gap-2 mb-3">
         <div className="relative flex-1">

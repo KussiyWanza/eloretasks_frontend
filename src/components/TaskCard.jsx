@@ -15,9 +15,21 @@ function TaskCard({ task, onDelete, onUpdate }) {
   const isCompleted = task.status === 'completed'
   const hasDetails = task.description || task.deadline
 
+  const isOverdue =
+    task.deadline &&
+    !isCompleted &&
+    new Date(task.deadline) < new Date(new Date().toDateString())
+
   const toggleComplete = async () => {
-    const res = await updateTask(task._id, { status: isCompleted ? 'pending' : 'completed' })
-    onUpdate(res.data)
+    const newStatus = isCompleted ? 'pending' : 'completed'
+    onUpdate({ ...task, status: newStatus })
+
+    try {
+      const res = await updateTask(task._id, { status: newStatus })
+      onUpdate(res.data)
+    } catch (err) {
+      onUpdate(task)
+    }
   }
 
   const saveEdit = async () => {
@@ -41,7 +53,7 @@ function TaskCard({ task, onDelete, onUpdate }) {
   return (
     <div
       className={`rounded-lg mb-2 transition-colors ${
-        isCompleted ? 'bg-green-500/15' : 'bg-white/5 hover:bg-white/10'
+        isCompleted ? 'bg-green-500/15' : isOverdue ? 'bg-red-500/30' : 'bg-white/5 hover:bg-white/10'
       }`}
     >
       <div
@@ -50,7 +62,10 @@ function TaskCard({ task, onDelete, onUpdate }) {
       >
         <div className="flex items-center gap-3 flex-1 min-w-0">
           <button
-            onClick={toggleComplete}
+            onClick={(e) => {
+              e.stopPropagation()
+              toggleComplete()
+            }}
             className={`w-5 h-5 flex-shrink-0 rounded-full border flex items-center justify-center transition-colors cursor-pointer ${
               isCompleted ? 'bg-green-500 border-green-500' : 'border-white/40 hover:border-white/70'
             }`}
@@ -75,7 +90,11 @@ function TaskCard({ task, onDelete, onUpdate }) {
           )}
 
           {hasDetails && !expanded && (
-            <span className="w-1.5 h-1.5 rounded-full bg-orange-400 flex-shrink-0" />
+            <span
+              className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
+                isOverdue ? 'bg-red-600' : 'bg-orange-400'
+              }`}
+            />
           )}
         </div>
 
@@ -127,8 +146,13 @@ function TaskCard({ task, onDelete, onUpdate }) {
               value={deadline}
               onChange={(e) => setDeadline(e.target.value)}
               onBlur={saveDetails}
-              className="bg-white/5 border border-white/20 text-white text-sm px-2 py-1 rounded-lg outline-none cursor-pointer"
+              className={`bg-white/5 border text-sm px-2 py-1 rounded-lg outline-none cursor-pointer ${
+                isOverdue ? 'border-red-400/50 text-red-300' : 'border-white/20 text-white'
+              }`}
             />
+            {isOverdue && (
+              <span className="text-red-400 text-xs font-medium">Overdue</span>
+            )}
           </div>
         </div>
       )}

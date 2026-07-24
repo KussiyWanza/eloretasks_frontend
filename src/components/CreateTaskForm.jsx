@@ -2,24 +2,29 @@ import { useState } from 'react'
 import { Plus } from 'lucide-react'
 import { createTask } from '../services/taskService'
 
-function CreateTaskForm({ onTaskCreated }) {
+function CreateTaskForm({ onTaskAdded, onTaskConfirmed, onTaskFailed }) {
   const [title, setTitle] = useState('')
   const [error, setError] = useState('')
-  const [submitting, setSubmitting] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!title.trim() || submitting) return
-    setSubmitting(true)
+    const trimmedTitle = title.trim()
+    if (!trimmedTitle) return
+
     setError('')
+
+    // Optimistically add a temporary task immediately
+    const tempId = `temp-${Date.now()}`
+    const tempTask = { _id: tempId, title: trimmedTitle, status: 'pending' }
+    onTaskAdded(tempTask)
+    setTitle('')
+
     try {
-      const res = await createTask({ title: title.trim(), status: 'pending' })
-      onTaskCreated(res.data)
-      setTitle('')
+      const res = await createTask({ title: trimmedTitle, status: 'pending' })
+      onTaskConfirmed(tempId, res.data)
     } catch (err) {
+      onTaskFailed(tempId)
       setError(err.response?.data?.message || 'Failed to create task')
-    } finally {
-      setSubmitting(false)
     }
   }
 
@@ -31,13 +36,11 @@ function CreateTaskForm({ onTaskCreated }) {
           placeholder="Add a new task"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          disabled={submitting}
-          className="flex-1 bg-transparent placeholder-white/50 text-white outline-none disabled:opacity-50"
+          className="flex-1 bg-transparent placeholder-white/50 text-white outline-none"
         />
         <button
           type="submit"
-          disabled={submitting}
-          className="w-8 h-8 flex-shrink-0 rounded-full border border-white/40 text-white flex items-center justify-center hover:bg-white/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+          className="w-8 h-8 flex-shrink-0 rounded-full border border-white/40 text-white flex items-center justify-center hover:bg-white/10 transition-colors cursor-pointer"
         >
           <Plus size={18} />
         </button>
