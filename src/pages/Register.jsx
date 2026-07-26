@@ -67,7 +67,7 @@ function Register() {
   <button
     type="button"
     onClick={() => setShowPassword((prev) => !prev)}
-    className="absolute right-1 top-1/2 -translate-y-1/2 text-white/70 hover:text-white"
+    className="absolute right-1 top-1/2 -translate-y-1/2 text-white/70 hover:text-white cursor-pointer"
   >
     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
   </button>
