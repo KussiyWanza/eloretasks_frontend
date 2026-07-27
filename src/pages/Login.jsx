@@ -42,7 +42,7 @@ function Login() {
           className="border-b-2 w-full border-white text-white p-2 mb-4 outline-none"
           required
         />
-        <div className="relative mb-3">
+        <div className="relative mb-1">
   <input
     type={showPassword ? 'text' : 'password'}
     placeholder="Password"
@@ -61,12 +61,18 @@ function Login() {
 </button>
 </div>
 
+        <div className="text-right mb-4">
+          <Link to="/forgot-password" className="text-sm text-orange-600 hover:text-orange-400">
+            Forgot password?
+          </Link>
+        </div>
+
         <button type="submit" className="border-2 border-white text-white w-full py-2 rounded cursor-pointer transition-colors hover:bg-white/10">
           Log In
         </button>
 
         <p className="text-sm mt-3 text-white text-center">
-          Don't have an account? <Link to="/register" className="text-orange-600">Register</Link>
+          Don't have an account? <Link to="/register" className="text-orange-600 hover:text-orange-400">Register</Link>
         </p>
       </form>
     </div>

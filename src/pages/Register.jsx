@@ -9,6 +9,7 @@ function Register() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
   const { setAuthData } = useContext(AuthContext)
   const navigate = useNavigate()
@@ -17,6 +18,12 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
+
+    if (password !== confirmPassword) {
+      setError("Passwords don't match")
+      return
+    }
+
     try {
       const res = await api.post('/auth/register', { name, email, password })
       const { token, user } = res.data
@@ -61,6 +68,7 @@ function Register() {
     placeholder="Password"
     value={password}
     onChange={(e) => setPassword(e.target.value)}
+    autoComplete="new password"
     className="border-b-2 border-white placeholder-white/70 text-white w-full p-2 pr-10 outline-none"
     required
   />
@@ -72,13 +80,23 @@ function Register() {
     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
   </button>
 </div>
-        
+
+        <input
+          type={showPassword ? 'text' : 'password'}
+          placeholder="Confirm Password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          autoComplete="new-pasword"
+          className="border-b-2 w-full border-white text-white p-2 mb-4 outline-none"
+          required
+        />
+
         <button type="submit" className="border-2 border-white text-white w-full py-2 rounded cursor-pointer transition-colors hover:bg-white/10">
           Register
         </button>
 
         <p className="text-sm text-white mt-3 text-center">
-          Already have an account? <Link to="/login" className="text-orange-600">Log In</Link>
+          Already have an account? <Link to="/login" className="text-orange-600 hover:text-orange-400">Log In</Link>
         </p>
       </form>
     </div>
