@@ -46,13 +46,20 @@ function TaskList() {
   }, [sortOpen])
 
   const handleDelete = async (id) => {
-    try {
-      await deleteTask(id)
-      setTasks((prev) => prev.filter((task) => task._id !== id))
-    } catch (err) {
-      setError('Failed to delete task')
-    }
+  // Keep a copy in case we need to restore it
+  const taskToDelete = tasks.find((t) => t._id === id)
+
+  // Remove it from the UI immediately
+  setTasks((prev) => prev.filter((task) => task._id !== id))
+
+  try {
+    await deleteTask(id)
+  } catch (err) {
+    // Restore it if the backend actually failed
+    setTasks((prev) => [taskToDelete, ...prev])
+    setError('Failed to delete task')
   }
+}
 
   const handleTaskAdded = (tempTask) => {
   setTasks((prev) => [tempTask, ...prev])

@@ -6,6 +6,7 @@ function TaskCard({ task, onDelete, onUpdate }) {
   const [isEditing, setIsEditing] = useState(false)
   const [title, setTitle] = useState(task.title)
   const [expanded, setExpanded] = useState(false)
+  const [confirmingDelete, setConfirmingDelete] = useState(false)
 
   const [description, setDescription] = useState(task.description || '')
   const [deadline, setDeadline] = useState(
@@ -48,6 +49,34 @@ function TaskCard({ task, onDelete, onUpdate }) {
       deadline: deadline || null,
     })
     onUpdate(res.data)
+  }
+
+  if (confirmingDelete) {
+    return (
+      <div
+        className={`rounded-lg mb-2 px-3 py-2.5 ${
+          isCompleted ? 'bg-green-500/15' : isOverdue ? 'bg-red-500/30' : 'bg-white/5'
+        }`}
+      >
+        <div className="flex items-center justify-between gap-3">
+          <p className="text-white text-sm truncate">Delete "{task.title}"?</p>
+          <div className="flex gap-2 flex-shrink-0">
+            <button
+              onClick={() => setConfirmingDelete(false)}
+              className="px-3 py-1.5 rounded-lg border border-white/30 text-white text-sm hover:bg-white/10 transition-colors cursor-pointer"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={() => onDelete(task._id)}
+              className="px-3 py-1.5 rounded-lg bg-red-500 hover:bg-red-600 text-white text-sm transition-colors cursor-pointer"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -120,7 +149,7 @@ function TaskCard({ task, onDelete, onUpdate }) {
           <button
             onClick={(e) => {
               e.stopPropagation()
-              onDelete(task._id)
+              setConfirmingDelete(true)
             }}
             className="text-white/50 hover:text-red-400 transition-colors cursor-pointer"
           >
@@ -129,33 +158,39 @@ function TaskCard({ task, onDelete, onUpdate }) {
         </div>
       </div>
 
-      {expanded && (
-        <div className="px-3 pb-3 pt-1 border-t border-white/10">
-          <textarea
-            placeholder="Add a description..."
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            onBlur={saveDetails}
-            rows={2}
-            className="w-full bg-white/5 border border-white/20 placeholder-white/40 text-white text-sm p-2 rounded-lg mb-2 outline-none"
-          />
-          <div className="flex items-center gap-2">
-            <label className="text-white/50 text-xs">Due:</label>
-            <input
-              type="date"
-              value={deadline}
-              onChange={(e) => setDeadline(e.target.value)}
+      <div
+        className={`grid transition-all duration-300 ease-in-out ${
+          expanded ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+        }`}
+      >
+        <div className="overflow-hidden">
+          <div className="px-3 pb-3 pt-1 border-t border-white/10">
+            <textarea
+              placeholder="Add a description..."
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               onBlur={saveDetails}
-              className={`bg-white/5 border text-sm px-2 py-1 rounded-lg outline-none cursor-pointer ${
-                isOverdue ? 'border-red-400/50 text-red-300' : 'border-white/20 text-white'
-              }`}
+              rows={2}
+              className="w-full bg-white/5 border border-white/20 placeholder-white/40 text-white text-sm p-2 rounded-lg mb-2 outline-none"
             />
-            {isOverdue && (
-              <span className="text-red-400 text-xs font-medium">Overdue</span>
-            )}
+            <div className="flex items-center gap-2">
+              <label className="text-white/50 text-xs">Due:</label>
+              <input
+                type="date"
+                value={deadline}
+                onChange={(e) => setDeadline(e.target.value)}
+                onBlur={saveDetails}
+                className={`bg-white/5 border text-sm px-2 py-1 rounded-lg outline-none cursor-pointer ${
+                  isOverdue ? 'border-red-400/50 text-red-300' : 'border-white/20 text-white'
+                }`}
+              />
+              {isOverdue && (
+                <span className="text-red-400 text-xs font-medium">Overdue</span>
+              )}
+            </div>
           </div>
         </div>
-      )}
+      </div>
     </div>
   )
 }
