@@ -192,7 +192,7 @@ const handleTaskFailed = (tempId) => {
 
       {tasks.length > 0 && (
         <p className="text-white/50 text-sm text-center mt-4 pt-4 border-t border-white/10">
-          {remaining} remaining :D
+          {remaining} remaining •⁠ ᴗ⁠ •
         </p>
       )}
 
