@@ -36,10 +36,13 @@ function Register() {
 
   return (
     <div
-      className="flex items-center justify-center min-h-screen bg-cover bg-center relative"
+      className="flex items-center justify-center flex-col min-h-screen bg-cover bg-center relative"
       style={{ backgroundImage: `url(${forestBg})` }}
     >
 
+      <div>
+        <h1 className='text-white text-3xl mb-4'><span className='text-orange-600 font-bold'>Elore</span>Tasks</h1>
+      </div>
 
       <form onSubmit={handleSubmit} className="relative bg-white/20 backdrop-blur-md border border-white/30 p-8 rounded-2xl shadow-2xl w-80">
         <h1 className="text-xl text-white font-bold mb-4 flex justify-center">Register</h1>
