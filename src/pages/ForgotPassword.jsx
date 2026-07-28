@@ -44,7 +44,7 @@ function ForgotPassword() {
       <div className="absolute inset-0 bg-black/40" />
 
       <form onSubmit={handleSubmit} className="relative bg-white/20 backdrop-blur-md border border-white/30 p-8 rounded-2xl shadow-2xl w-80">
-        <h1 className="text-xl font-bold mb-4 text-white">Forgot Password</h1>
+        <h1 className="text-xl font-bold mb-4 text-white">How could you forget your password so soon T-T</h1>
 
         {sent ? (
           <p className="text-white/80 mb-4">
