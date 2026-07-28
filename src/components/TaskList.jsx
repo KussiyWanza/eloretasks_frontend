@@ -22,7 +22,7 @@ function TaskList() {
       if (sortBy !== 'newest') params.sortBy = sortBy
 
       const res = await getTasks(params)
-      setTasks(res.data)
+      setTasks(res.data.map((t) => ({ ...t, clientId: t._id })))
     } catch (err) {
       setError('Failed to load tasks')
     } finally {
@@ -62,11 +62,13 @@ function TaskList() {
 }
 
   const handleTaskAdded = (tempTask) => {
-  setTasks((prev) => [tempTask, ...prev])
+  setTasks((prev) => [{ ...tempTask, clientId: tempTask._id }, ...prev])
 }
 
 const handleTaskConfirmed = (tempId, realTask) => {
-  setTasks((prev) => prev.map((t) => (t._id === tempId ? realTask : t)))
+  setTasks((prev) =>
+    prev.map((t) => (t._id === tempId ? { ...realTask, clientId: t.clientId } : t))
+  )
 }
 
 const handleTaskFailed = (tempId) => {
@@ -74,7 +76,7 @@ const handleTaskFailed = (tempId) => {
 }
 
   const handleTaskUpdated = (updatedTask) => {
-    setTasks((prev) => prev.map((t) => (t._id === updatedTask._id ? updatedTask : t)))
+    setTasks((prev) => prev.map((t) => (t._id === updatedTask._id ? { ...updatedTask, clientId: t.clientId } : t)))
   }
 
   const handleClearAll = async () => {
@@ -185,7 +187,7 @@ const handleTaskFailed = (tempId) => {
       )}
 
       {filteredTasks.map((task) => (
-        <TaskCard key={task._id} task={task} onDelete={handleDelete} onUpdate={handleTaskUpdated} />
+        <TaskCard key={task.clientId} task={task} onDelete={handleDelete} onUpdate={handleTaskUpdated} />
       ))}
 
       {tasks.length > 0 && (
