@@ -86,7 +86,7 @@ const handleTaskFailed = (tempId) => {
 
   const filteredTasks = tasks.filter((task) => {
     if (filter === 'completed') return task.status === 'completed'
-    if (filter === 'incomplete') return task.status !== 'completed'
+    if (filter === 'in progress') return task.status !== 'completed'
     return true
   })
 
@@ -149,7 +149,7 @@ const handleTaskFailed = (tempId) => {
       </div>
 
       <div className="flex items-center gap-2 mb-4">
-        {['all', 'incomplete', 'completed'].map((f) => (
+        {['all', 'in progress', 'completed'].map((f) => (
           <button
             key={f}
             onClick={() => setFilter(f)}
