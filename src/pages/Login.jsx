@@ -2,24 +2,28 @@ import { useState, useContext } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext.jsx'
 import forestBg from '../assets/forest-bg.jpg'
-import { Eye, EyeOff } from 'lucide-react'
+import { Eye, EyeOff, Loader2 } from 'lucide-react'
 
 function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [showPassword, setShowPassword] = useState(false)
+  const [loading, setLoading] = useState(false)
   const { login } = useContext(AuthContext)
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
+    setLoading(true)
     try {
       await login(email, password)
       navigate('/')
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -42,7 +46,8 @@ function Login() {
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="border-b-2 w-full border-white text-white p-2 mb-4 outline-none"
+          disabled={loading}
+          className="border-b-2 w-full border-white text-white p-2 mb-4 outline-none disabled:opacity-50"
           required
         />
         <div className="relative mb-1">
@@ -51,7 +56,8 @@ function Login() {
     placeholder="Password"
     value={password}
     onChange={(e) => setPassword(e.target.value)}
-    className="border-b-2 border-white placeholder-white/70 outline-none text-white w-full p-2 pr-10"
+    disabled={loading}
+    className="border-b-2 border-white placeholder-white/70 outline-none text-white w-full p-2 pr-10 disabled:opacity-50"
     required
   />
   
@@ -70,8 +76,19 @@ function Login() {
           </Link>
         </div>
 
-        <button type="submit" className="border-2 border-white text-white w-full py-2 rounded cursor-pointer transition-colors hover:bg-white/10">
-          Log In
+        <button
+          type="submit"
+          disabled={loading}
+          className="border-2 border-white text-white w-full py-2 rounded cursor-pointer transition-colors hover:bg-white/10 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        >
+          {loading ? (
+            <>
+              <Loader2 size={18} className="animate-spin" />
+              Logging in...
+            </>
+          ) : (
+            'Log In'
+          )}
         </button>
 
         <p className="text-sm mt-3 text-white text-center">
