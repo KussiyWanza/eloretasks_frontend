@@ -13,7 +13,7 @@ function CreateTaskForm({ onTaskAdded, onTaskConfirmed, onTaskFailed }) {
 
     setError('')
 
-    // Optimistically add a temporary task immediately
+    // Optimistically add a temporary task immediately (this basically updates the task change on the UI first before updating it on the backend, improving UX)
     const tempId = `temp-${Date.now()}`
     const tempTask = { _id: tempId, title: trimmedTitle, status: 'pending' }
     onTaskAdded(tempTask)
