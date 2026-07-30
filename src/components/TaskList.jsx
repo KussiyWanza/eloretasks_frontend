@@ -49,13 +49,13 @@ function TaskList() {
   // Keep a copy in case we need to restore it
   const taskToDelete = tasks.find((t) => t._id === id)
 
-  // Remove it from the UI immediately
+  // Remove it from the UI immediately (this basically updates the UI before the backend to ensure a positive UX)
   setTasks((prev) => prev.filter((task) => task._id !== id))
 
   try {
     await deleteTask(id)
   } catch (err) {
-    // Restore it if the backend actually failed
+    // This restores the task in case the backend fails to register the change
     setTasks((prev) => [taskToDelete, ...prev])
     setError('Failed to delete task')
   }
@@ -102,7 +102,7 @@ const handleTaskFailed = (tempId) => {
   const remaining = tasks.filter((t) => t.status !== 'completed').length
 
   return (
-    <div className="relative bg-white/10 backdrop-blur-md border-x-2 border-white/30 shadow-lg p-6 max-w-md mx-auto rounded-2xl">
+    <div className="relative bg-white/10 backdrop-blur-md border-x-1 border-white shadow-lg p-6 max-w-md mx-auto rounded-2xl">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-bold text-white">Todo List</h2>
       </div>
